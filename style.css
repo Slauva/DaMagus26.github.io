@@ -1,0 +1,52 @@
+body {
+    background-color: #111;
+}
+
+canvas {
+    margin: 10px;
+    background-color: #000;
+    box-shadow: 10px 10px 4px #000;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+footer {
+    height: 60px;
+    margin: 0;
+    background-color: #222;
+    padding: 2px;
+}
+
+.game_window {
+
+}
+
+.logo {
+    font-size: 80px;
+    font-family: Impact, serif;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 3px;
+}
+
+.controls {
+    font-size: 15px;
+    font-family: Impact, serif;
+    color: #fff;
+    text-align: center;
+    padding: 0px;
+}
+
+.space {
+    height: 100px;
+}
+
+.footer_text {
+    color: #aaa;
+    text-align: right;
+    font-size: 10px;
+    font-family: Arial, sans-serif;
+}
