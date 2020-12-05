@@ -30,7 +30,7 @@ const ball = {
     x: canvas.width / 2,
     y: canvas.height / 2,
     radius: 10,
-    speed: 5,
+    speed: 4,
     velocityX: 5,
     velocityY: 5,
     color: '#fff'
@@ -91,7 +91,7 @@ function collision(b, p) {
 function resetBall() {
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
-    ball.speed = 5;
+    ball.speed = 4;
     ball.velocityX = -ball.velocityX;
 }
 
@@ -119,13 +119,28 @@ function update() {
 
     // Проверка на столкновение с ракетками
     if (collision(ball, player)) {
-        let collidePoint = (ball.y - (player.y + player.height / 2));
-        collidePoint /= (player.height / 2);
-        let angleRad = (Math.PI / 4) * collidePoint;
-        let direction = (ball.x < canvas.width / 2) ? 1 : -1;
 
-        ball.velocityX = direction * ball.speed * Math.cos(angleRad);
-        ball.velocityY = direction * ball.speed * Math.sin(angleRad);
+        let collidePoint = (ball.y - (player.y + player.height / 2));
+
+        /*
+        * Краткое описание математической логики:
+        * Если мячик ударяется о грань ракетки (то есть расстояние от чентра ракетки до точки касания <= 45,
+        * что имеет смысл, так как расстояние может быть на интервале (-55, 55), где все, что больше 50 -
+        * это касание только угла), то просто инвертируем скорость по X, так как такой удар не повлияет на угол
+        * траектории мяча (скорость ракетки пока не учитывается).
+        * Если мячик ударяется об угол ракетки (то есть collidePoint > 45), то вычисляется угол полёта мяча, по
+        * тригонометрической формуле.
+        */
+        if ((Math.abs(collidePoint) > 45) && (ball.velocityY < 0 === collidePoint > 0)) {
+            collidePoint /= (player.height / 2);
+            let angleRad = (Math.PI / 4) * collidePoint;
+            let direction = (ball.x < canvas.width / 2) ? 1 : -1;
+
+            ball.velocityX = direction * ball.speed * Math.cos(angleRad);
+            ball.velocityY = ball.speed * Math.sin(angleRad);
+        } else {
+            ball.velocityX *= -1;
+        }
 
         ball.speed += 0.2;
     }
@@ -145,4 +160,13 @@ function game() {
     render();
 }
 
-setInterval(game, 1000 / fps);
+render();
+
+document.addEventListener('keydown', run);
+
+function run(event) {
+    if (event.keyCode === 13) {
+        setInterval(game, 1000 / fps);
+
+    }
+}
