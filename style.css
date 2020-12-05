@@ -13,11 +13,22 @@ main {
     justify-content: center;
 }
 
-footer {
-    height: 60px;
-    margin: 0;
+.footer {
+    position: relative;
     background-color: #222;
-    padding: 2px;
+    height: 50px;
+}
+
+.footer_content {
+    width: 100%;
+    text-align: left;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 5px 5px 5px 5px;
+    color: #aaaaaa;
+    font-size: 12px;
+    font-family: "Times New Roman", serif;
 }
 
 .game_window {
@@ -37,7 +48,7 @@ footer {
     font-family: Impact, serif;
     color: #fff;
     text-align: center;
-    padding: 0px;
+    padding: 0;
 }
 
 .space {
