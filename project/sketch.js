@@ -1,20 +1,22 @@
 const canvas = document.getElementById('pong');  // Получить ссылку на HTML тэг canvas
 const context = canvas.getContext('2d');  // Доступ к контексту рисования на canvas
 
+const max_ghost_mode = 3;
 const fps = 50;
+let ghost_mode = 0;  // Прозрачность ракетки 3 кадра после удара, для избежания повторного удара
 
 const user_paddle = {  // Ракетка игрока
     x: 0,
     y: canvas.height / 2 - 50,
-    width: 10,
+    width: 15,
     height: 100,
     color: '#fff',
-    score: 0
+    score: 0,
 };
 const ai_paddle = {  // Ракетка компьютера
-    x: canvas.width - 10,
+    x: canvas.width - 15,
     y: canvas.height / 2 - 50,
-    width: 10,
+    width: 15,
     height: 100,
     color: '#fff',
     score: 0
@@ -63,14 +65,18 @@ function drawNet() {
 }
 
 function render() {  // Нарисовать целый кадр
+    // Рендер поля
     drawRect(0, 0, canvas.width, canvas.height, '#000');
     drawNet();
+    // Рендер счета
     drawText(user_paddle.score, canvas.width / 4, canvas.height / 5, '#fff');
     drawText(ai_paddle.score, canvas.width / 4 * 3, canvas.height / 5, '#fff');
 
+    // Рендер ракеток
     drawRect(user_paddle.x, user_paddle.y, user_paddle.width, user_paddle.height, user_paddle.color);
     drawRect(ai_paddle.x, ai_paddle.y, ai_paddle.width, ai_paddle.height, ai_paddle.color);
 
+    // Рендер мячика
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
 }
 
@@ -89,9 +95,12 @@ function collision(b, p) {
 }
 
 function resetBall() {
+    let score_diff = user_paddle.score - ai_paddle.score;
+    score_diff = (score_diff >= 0) ? score_diff : 0;
+    let score_sum = user_paddle.score + ai_paddle.score;
     ball.x = canvas.width / 2;
     ball.y = canvas.height / 2;
-    ball.speed = 4;
+    ball.speed = 4 + (score_diff / 2.5) + (score_sum / 20);
     ball.velocityX = -ball.velocityX;
 }
 
@@ -103,8 +112,11 @@ function movePaddle(evt) {
 }
 
 function ai() {
+    let score_diff = user_paddle.score - ai_paddle.score;
+    score_diff = (score_diff >= 0) ? score_diff : 0;
     let difficulty_level = 0.05;  // 0-1 (1 - непобедимый)
-    ai_paddle.y += (ball.y -  (ai_paddle.y + ai_paddle.height / 2)) * difficulty_level;
+    let difficulty_level_inc = Math.pow(2, score_diff/100) - 1;  // Динамическое повышение уровня сложности
+    ai_paddle.y += (ball.y -  (ai_paddle.y + ai_paddle.height / 2)) * (difficulty_level + difficulty_level_inc);
 }
 
 function update() {
@@ -118,10 +130,9 @@ function update() {
     }
 
     // Проверка на столкновение с ракетками
-    if (collision(ball, player)) {
+    if (collision(ball, player) && ghost_mode === 0) {
 
         let collidePoint = (ball.y - (player.y + player.height / 2));
-
         /*
         * Краткое описание математической логики:
         * Если мячик ударяется о грань ракетки (то есть расстояние от чентра ракетки до точки касания <= 45,
@@ -142,7 +153,10 @@ function update() {
             ball.velocityX *= -1;
         }
 
+        ghost_mode = 3;
         ball.speed += 0.2;
+    } else if (ghost_mode > 0) {
+        ghost_mode -= 1;
     }
 
     if (ball.x - ball.radius <= 0) {  // Проверка на столкновение с лицевыми гранями
@@ -164,9 +178,24 @@ render();
 
 document.addEventListener('keydown', run);
 
-function run(event) {
-    if (event.keyCode === 13) {
-        setInterval(game, 1000 / fps);
+let main_loop;  // Основной игровой цикл. Когда он запускается, игра начинает работать
+let enter = 0;  // Кратность количество нажатий Enter (для возможность ставить игру на паузу. *костыль*)
 
+function run(event) {
+    // Функция отвечает за запуск и перезапуск и игры
+    if (event.keyCode === 13) {
+        enter = (enter + 1) % 2;  // enter = 1  =>  игра запускается. enter = 0  =>  игра перезапускается
+        if (enter === 1) {
+            main_loop = setInterval(game, 1000 / fps);
+        } else {
+            // Перезапуск игрового поля
+            clearInterval(main_loop);
+            resetBall();
+            user_paddle.score = 0;
+            user_paddle.y = canvas.height / 2 - 50;
+            ai_paddle.score = 0;
+            ai_paddle.y = canvas.height / 2 - 50;
+            render();
+        }
     }
 }
