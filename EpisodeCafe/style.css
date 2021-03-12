@@ -99,7 +99,7 @@ body {
 }
 
 .nav-content ul {
-    list-style: "- ";
+    list-style: none;
 }
 
 .nav-item:hover {
