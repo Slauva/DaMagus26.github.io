@@ -101,9 +101,14 @@ body {
 .nav-content ul {
     list-style: '- ';
 }
-
+.nav-item {
+    display: inline-table;
+    border-bottom: 3px solid transparent;
+    transition: 0.5s all linear;
+}
 .nav-item:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    border-color: white;
 }
 
 .content {
