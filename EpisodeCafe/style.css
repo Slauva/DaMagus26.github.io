@@ -3,22 +3,22 @@
 /*@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Dancing+Script:wght@500&display=swap');*/
 
 @font-face {
-    font-family: "Dancing Script";
-    src: url("fonts/Dancing_Script/static/DancingScript-Medium.ttf");
+    font-family: 'Dancing Script';
+    src: url('fonts/Dancing_Script/static/DancingScript-Medium.ttf');
     font-style: normal;
     font-weight: 500;
 }
 
 @font-face {
     font-family: Caveat;
-    src: url("fonts/Caveat/static/Caveat-Regular.ttf");
+    src: url('fonts/Caveat/static/Caveat-Regular.ttf');
     font-style: normal;
     font-weight: 400;
 }
 
 @font-face {
     font-family: Raleway;
-    src: url("fonts/Raleway/static/Raleway-Regular.ttf");
+    src: url('fonts/Raleway/static/Raleway-Regular.ttf');
     font-style: normal;
     font-weight: 400;
 }
@@ -49,13 +49,13 @@ body {
     position: fixed;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    background-image: url("images/chalkboard_bar.jpg");
+    background-image: url('images/chalkboard_bar.jpg');
     background-blend-mode: multiply;
 }
 
 .logo-text {
     color: #fff;
-    font-family: "Dancing Script", sans-serif;
+    font-family: 'Dancing Script', sans-serif;
     font-size: 4em;
     cursor: pointer;
 }
@@ -82,7 +82,7 @@ body {
     height: 100%;
     width: 209px;
     background-color: rgba(0, 0, 0, 0.01);
-    background-image: url("images/chalkboard_nav.jpg");
+    background-image: url('images/chalkboard_nav.jpg');
     background-blend-mode: multiply;
 }
 
@@ -99,7 +99,7 @@ body {
 }
 
 .nav-content ul {
-    list-style: "- ";
+    list-style: '- ';
 }
 
 .nav-item:hover {
@@ -112,7 +112,6 @@ body {
     margin-right: 10px;
     padding-top: 100px;
     text-align: center;
-
 }
 
 .content-header {
@@ -143,7 +142,7 @@ body {
 .footer {
     margin-top: 10px;
     background-color: rgba(0, 0, 0, 0.4);
-    background-image: url("images/dark_wood_planck.jpg");
+    background-image: url('images/dark_wood_planck.jpg');
     background-blend-mode: multiply;
     background-size: cover;
 }
@@ -158,7 +157,7 @@ body {
 
 .logo-small {
     color: beige;
-    font-family: "Dancing Script", sans-serif;
+    font-family: 'Dancing Script', sans-serif;
     font-size: 2em;
 }
 
@@ -174,4 +173,5 @@ body {
 .social-icon {
     width: 40px;
     height: 40px;
+    background-repeat: no-repeat;
 }
